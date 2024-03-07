@@ -5,34 +5,51 @@ package auth;
 option go_package = "lokk.sso.v1;ssov1";
 
 service Auth{
-  rpc Register (RegisterRequest) returns (RegisterResponse);
-  rpc Login (LoginRequest) returns (LoginResponse);
-  rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
+  rpc VerifyNewPhoneNumber(VerifyNewPhoneNumberRequest)  returns (VerifyNewPhoneNumberResponse);
+  rpc SendSmsCode(Empty)  returns (Empty);
+  rpc SignUpByPhone(SignUpByPhoneRequest)  returns (SignUpByPhoneResponse);
+  rpc VerifyPhoneNumber(VerifyPhoneNumberRequest)  returns (VerifyPhoneNumberResponse);
+  rpc SignInByPhone (SignInByPhoneRequest) returns (SignInByPhoneResponse);
 }
 
-message RegisterRequest {
-  string email = 1; // Email
-  string password = 2; // Password
+message VerifyNewPhoneNumberRequest {
+  string phone = 1;
 }
 
-message RegisterResponse {
-  string user_id = 1; // User ID
+message VerifyNewPhoneNumberResponse {
+  string status = 1;
+  string sms_code = 2;
+  int64 expiration_time = 3;
 }
 
-message LoginRequest {
-  string email = 1; // Email
-  string password = 2; // Password
-  int32 app_id = 3; // ID App
+message Empty {}
+
+message SignUpByPhoneRequest {
+  string phone = 1;
+  string birthday_date = 2;
+  string default_tag = 3;
 }
 
-message LoginResponse {
-  string token = 1; // Auth token
+message SignUpByPhoneResponse {
+  string status = 1;
 }
 
-message IsAdminRequest {
-  string user_id = 1;
+message VerifyPhoneNumberRequest {
+  string phone = 1;
 }
 
-message IsAdminResponse {
-  bool is_admin = 1;
+message VerifyPhoneNumberResponse {
+  string status = 1;
+  string sms_code = 2;
+  int64 expiration_time = 3;
+}
+
+message SignInByPhoneRequest {
+  string phone = 1;
+  string sms_code = 2;
+}
+
+message SignInByPhoneResponse {
+  string access_token = 1; // Auth token
+  string refresh_token = 2; // Refresh token
 }
