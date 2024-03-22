@@ -26,8 +26,9 @@ message Empty {}
 
 message SignUpByPhoneRequest {
   string phone = 1;
-  string birthday_date = 2;
-  string default_tag = 3;
+  string sms_code = 2;
+  string birthday_date = 3;
+  string default_tag = 4;
 }
 
 message SignUpByPhoneResponse {
@@ -50,6 +51,7 @@ message SignInByPhoneRequest {
 }
 
 message SignInByPhoneResponse {
-  string access_token = 1; // Auth token
-  string refresh_token = 2; // Refresh token
+  string status = 1;
+  string access_token = 2; // Auth token
+  string refresh_token = 3; // Refresh token
 }
