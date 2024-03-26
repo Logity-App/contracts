@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthClient interface {
 	VerifyNewPhoneNumber(ctx context.Context, in *VerifyNewPhoneNumberRequest, opts ...grpc.CallOption) (*VerifyNewPhoneNumberResponse, error)
-	SendSmsCode(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
+	SendSmsCode(ctx context.Context, in *SendSmsCodeRequest, opts ...grpc.CallOption) (*SendSmsCodeResponse, error)
 	SignUpByPhone(ctx context.Context, in *SignUpByPhoneRequest, opts ...grpc.CallOption) (*SignUpByPhoneResponse, error)
 	VerifyPhoneNumber(ctx context.Context, in *VerifyPhoneNumberRequest, opts ...grpc.CallOption) (*VerifyPhoneNumberResponse, error)
 	SignInByPhone(ctx context.Context, in *SignInByPhoneRequest, opts ...grpc.CallOption) (*SignInByPhoneResponse, error)
@@ -46,8 +46,8 @@ func (c *authClient) VerifyNewPhoneNumber(ctx context.Context, in *VerifyNewPhon
 	return out, nil
 }
 
-func (c *authClient) SendSmsCode(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *authClient) SendSmsCode(ctx context.Context, in *SendSmsCodeRequest, opts ...grpc.CallOption) (*SendSmsCodeResponse, error) {
+	out := new(SendSmsCodeResponse)
 	err := c.cc.Invoke(ctx, "/auth.Auth/SendSmsCode", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ func (c *authClient) SignInByPhone(ctx context.Context, in *SignInByPhoneRequest
 // for forward compatibility
 type AuthServer interface {
 	VerifyNewPhoneNumber(context.Context, *VerifyNewPhoneNumberRequest) (*VerifyNewPhoneNumberResponse, error)
-	SendSmsCode(context.Context, *Empty) (*Empty, error)
+	SendSmsCode(context.Context, *SendSmsCodeRequest) (*SendSmsCodeResponse, error)
 	SignUpByPhone(context.Context, *SignUpByPhoneRequest) (*SignUpByPhoneResponse, error)
 	VerifyPhoneNumber(context.Context, *VerifyPhoneNumberRequest) (*VerifyPhoneNumberResponse, error)
 	SignInByPhone(context.Context, *SignInByPhoneRequest) (*SignInByPhoneResponse, error)
@@ -101,7 +101,7 @@ type UnimplementedAuthServer struct {
 func (UnimplementedAuthServer) VerifyNewPhoneNumber(context.Context, *VerifyNewPhoneNumberRequest) (*VerifyNewPhoneNumberResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyNewPhoneNumber not implemented")
 }
-func (UnimplementedAuthServer) SendSmsCode(context.Context, *Empty) (*Empty, error) {
+func (UnimplementedAuthServer) SendSmsCode(context.Context, *SendSmsCodeRequest) (*SendSmsCodeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendSmsCode not implemented")
 }
 func (UnimplementedAuthServer) SignUpByPhone(context.Context, *SignUpByPhoneRequest) (*SignUpByPhoneResponse, error) {
@@ -145,7 +145,7 @@ func _Auth_VerifyNewPhoneNumber_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _Auth_SendSmsCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(SendSmsCodeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -157,7 +157,7 @@ func _Auth_SendSmsCode_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/auth.Auth/SendSmsCode",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).SendSmsCode(ctx, req.(*Empty))
+		return srv.(AuthServer).SendSmsCode(ctx, req.(*SendSmsCodeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

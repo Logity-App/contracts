@@ -6,7 +6,7 @@ option go_package = "lokk.sso.v1;ssov1";
 
 service Auth{
   rpc VerifyNewPhoneNumber(VerifyNewPhoneNumberRequest)  returns (VerifyNewPhoneNumberResponse);
-  rpc SendSmsCode(Empty)  returns (Empty);
+  rpc SendSmsCode(SendSmsCodeRequest)  returns (SendSmsCodeResponse);
   rpc SignUpByPhone(SignUpByPhoneRequest)  returns (SignUpByPhoneResponse);
   rpc VerifyPhoneNumber(VerifyPhoneNumberRequest)  returns (VerifyPhoneNumberResponse);
   rpc SignInByPhone (SignInByPhoneRequest) returns (SignInByPhoneResponse);
@@ -19,20 +19,26 @@ message VerifyNewPhoneNumberRequest {
 message VerifyNewPhoneNumberResponse {
   string status = 1;
   string sms_code = 2;
-  int64 expiration_time = 3;
 }
 
-message Empty {}
+message SendSmsCodeRequest {
+  string phone = 1;
+  string sms_code = 2;
+}
+
+message SendSmsCodeResponse {
+  string status = 1;
+}
 
 message SignUpByPhoneRequest {
   string phone = 1;
-  string sms_code = 2;
-  string birthday_date = 3;
-  string default_tag = 4;
+  string birthday_date = 2;
+  string default_tag = 3;
 }
 
 message SignUpByPhoneResponse {
   string status = 1;
+  string access_token = 2; // Auth token
 }
 
 message VerifyPhoneNumberRequest {
